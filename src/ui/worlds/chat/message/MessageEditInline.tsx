@@ -118,7 +118,8 @@ export function MessageEditInline({
           {t('chat.messageActions.cancel')}
         </button>
         <button type="button" className="btn-secondary compact active" onClick={() => void onCommitEdit(message)}>
-          {t('chat.messageEdit.saveAndRetry')}
+          {/* 把这里的文案改掉，因为底层已经不会重试了 */}
+          {t('chat.messageActions.save', '保存修改')} 
         </button>
       </div>
     </div>
