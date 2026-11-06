@@ -188,7 +188,7 @@
         z-index: 0;
       }
 
-      /* 玻璃星体（缩小到 32px） */
+      /* 玻璃星体（32px） */
       #root:empty::after {
         content: "";
         position: fixed;
@@ -235,8 +235,9 @@
       }
     </style>
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="icon" href="/icons/polaris-icon-192.png" type="image/png" />
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <!-- 增加了 ?v=2 防止 iOS 顽固缓存旧图标 -->
+    <link rel="icon" href="/icons/polaris-icon-192.png?v=2" type="image/png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=2" />
     <title>Polaris</title>
   </head>
   <body>
