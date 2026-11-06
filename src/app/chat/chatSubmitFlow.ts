@@ -7,7 +7,6 @@ import {
   finishChatSendPerformanceTrace,
   recordChatSendPerformanceMark
 } from './chatSendPerformanceTrace';
-import { resolveChatReplyPersistenceStatus } from './chatReplyPersistence';
 
 type SubmitMessageState = {
   inputDraft: string;
@@ -181,18 +180,5 @@ export async function submitMessage(state: SubmitMessageState, handlers: SubmitM
     hasCardReference: Boolean(userMessage.cardReference)
   });
 
-  try {
-    await handlers.requestReply({
-      conversationId: writableSession.conversationId,
-      collaboratorId: conversationSession.collaboratorId,
-      messages: nextMessages
-    });
-  } catch (error) {
-    const persistenceStatus = resolveChatReplyPersistenceStatus(error);
-    if (!persistenceStatus) throw error;
-    handlers.setCommandStatus(persistenceStatus, true);
-    finishChatSendPerformanceTrace(writableSession.conversationId, 'failed', {
-      extra: ['persistence boundary failed']
-    });
-  }
+  // 自动回复的代码已被切除，现在发送消息只会保存，不会触发 AI 回复。
 }
