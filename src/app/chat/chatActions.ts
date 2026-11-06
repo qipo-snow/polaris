@@ -65,7 +65,7 @@ export function createChatActionHandlers({
 
     const latestSubmitState = readLatestSubmitState();
 
-    // 【新增逻辑 1】：拦截空输入，触发 AI 回复
+    // 新增：空输入触发回复
     if (!latestSubmitState.inputDraft.trim() && latestSubmitState.pendingAttachments.length === 0 && !latestSubmitState.pendingCardReference) {
       const activeConv = latestSubmitState.activeConversationId
         ? latestSubmitState.conversations.find((conversation) => conversation.id === latestSubmitState.activeConversationId) ?? null
@@ -77,7 +77,7 @@ export function createChatActionHandlers({
           collaboratorId: derived.activeCollaboratorSourceId ?? activeConv.collaboratorId!,
           messages: activeConv.messages
         });
-        return; 
+        return;
       }
     }
 
@@ -188,7 +188,6 @@ export function createChatActionHandlers({
     const messageIndex = writableConversation.messages.findIndex((candidate) => candidate.id === message.id);
     if (messageIndex === -1) return;
     
-    // 【新增逻辑 2】：只替换消息，不再往下传递 nextMessages 给 runReply，保证绝对不报错
     const nextMessages = [...writableConversation.messages.slice(0, messageIndex), nextUserMessage];
     store.chat.replaceConversationMessages(writableConversation, nextMessages);
     ui.cancelEditingMessage();
@@ -275,10 +274,10 @@ export function createChatActionHandlers({
 
     const sourceConversation = await store.chat.ensureConversationWritable(activeConversation.id);
     if (!sourceConversation) {
-      ui.setCommand.mStatus('读取当前对话历史失败，先别分支。', true);
-essages      return;
+      ui.setCommandStatus('读取当前对话历史失败，先别分支。', true);
+      return;
     }
-    const messageIndex =.find sourceConversationIndex((candidate) => candidate.id === message.id);
+    const messageIndex = sourceConversation.messages.findIndex((candidate) => candidate.id === message.id);
     if (messageIndex < 0) return;
 
     const conversationId = store.chat.createConversation(sourceConversation.conversation.collaboratorId, {
