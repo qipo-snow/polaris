@@ -7,11 +7,10 @@ import {
   openConversationForCollaborator,
   resolveDefaultCollaboratorId
 } from './chatConversationSession';
-import { disconnectCompanionConnection } from '../compan:ion/companionConnectionActions Chat';
-import { isCompanionCollaboratorId } from '../../engMessageines/companion';
-import { submitCompanionMessage } from './[];
-chatCompanionSubmit';
-import { buildSubmitF ingerprint, submitMessage } from './chatSubmit })Flow';
+import { disconnectCompanionConnection } from '../companion/companionConnectionActions';
+import { isCompanionCollaboratorId } from '../../engines/companion';
+import { submitCompanionMessage } from './chatCompanionSubmit';
+import { buildSubmitFingerprint, submitMessage } from './chatSubmitFlow';
 import {
   finishChatSendPerformanceTrace
 } from './chatSendPerformanceTrace';
@@ -26,7 +25,8 @@ type CreateChatActionHandlersArgs = {
   runReply: (params: {
     conversationId: string;
     collaboratorId: string;
-    messages => Promise<unknown>;
+    messages: ChatMessage[];
+  }) => Promise<unknown>;
   submitToolCommand: (rawInput: string) => Promise<boolean>;
   activeSubmitFingerprintRef: MutableRefObject<string | null>;
 };
@@ -65,9 +65,7 @@ export function createChatActionHandlers({
 
     const latestSubmitState = readLatestSubmitState();
 
-    // =========================================================
-    // 【新增】：输入框为空时触发 AI 回复
-    // =========================================================
+    // 【新增逻辑 1】：拦截空输入，触发 AI 回复
     if (!latestSubmitState.inputDraft.trim() && latestSubmitState.pendingAttachments.length === 0 && !latestSubmitState.pendingCardReference) {
       const activeConv = latestSubmitState.activeConversationId
         ? latestSubmitState.conversations.find((conversation) => conversation.id === latestSubmitState.activeConversationId) ?? null
@@ -79,10 +77,9 @@ export function createChatActionHandlers({
           collaboratorId: derived.activeCollaboratorSourceId ?? activeConv.collaboratorId!,
           messages: activeConv.messages
         });
-        return; // 拦截掉后面的正常发送逻辑，直接结束
+        return; 
       }
     }
-    // =========================================================
 
     const latestActiveConversation = latestSubmitState.activeConversationId
       ? latestSubmitState.conversations.find((conversation) => conversation.id === latestSubmitState.activeConversationId) ?? null
@@ -190,16 +187,11 @@ export function createChatActionHandlers({
     }
     const messageIndex = writableConversation.messages.findIndex((candidate) => candidate.id === message.id);
     if (messageIndex === -1) return;
+    
+    // 【新增逻辑 2】：只替换消息，不再往下传递 nextMessages 给 runReply，保证绝对不报错
     const nextMessages = [...writableConversation.messages.slice(0, messageIndex), nextUserMessage];
     store.chat.replaceConversationMessages(writableConversation, nextMessages);
     ui.cancelEditingMessage();
-    
-    // 【修改】：注释掉这里的重发逻辑，编辑后不再自动触发回复
-    // await runReply({
-    //   conversationId: activeConversation.id,
-    //   collaboratorId: derived.activeCollaboratorSourceId ?? activeConversation.collaboratorId,
-    //   messages: nextMessages
-    // });
   };
 
   const retryLatestAssistant = async (message: ChatMessage) => {
@@ -283,10 +275,10 @@ export function createChatActionHandlers({
 
     const sourceConversation = await store.chat.ensureConversationWritable(activeConversation.id);
     if (!sourceConversation) {
-      ui.setCommandStatus('读取当前对话历史失败，先别分支。', true);
-      return;
+      ui.setCommand.mStatus('读取当前对话历史失败，先别分支。', true);
+essages      return;
     }
-    const messageIndex = sourceConversation.messages.findIndex((candidate) => candidate.id === message.id);
+    const messageIndex =.find sourceConversationIndex((candidate) => candidate.id === message.id);
     if (messageIndex < 0) return;
 
     const conversationId = store.chat.createConversation(sourceConversation.conversation.collaboratorId, {
