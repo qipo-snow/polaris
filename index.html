@@ -53,38 +53,107 @@
       })();
     </script>
     <style>
+      /* ========== 外观变量：浅蓝毛玻璃 ========== */
       :root {
         color-scheme: light;
-        --polaris-boot-bg: #ffffff;
-        --polaris-boot-star-aura: radial-gradient(circle, rgba(142, 223, 255, 0.22), rgba(216, 185, 255, 0.12) 44%, rgba(246, 167, 207, 0) 72%);
-        --polaris-boot-star: linear-gradient(135deg, #8edfff 0%, #aeb8ff 32%, #dec2ff 55%, #f5c3d5 74%, #f5d79a 100%);
-        --polaris-boot-star-shadow: drop-shadow(0 0 14px rgba(174, 184, 255, 0.42));
+        --polaris-boot-bg: #f4f9ff;
+
+        /* 背景：极光色斑，给玻璃"透"的东西 */
+        --polaris-boot-backdrop:
+          radial-gradient(60% 50% at 22% 18%, rgba(160, 220, 255, 0.55), transparent 70%),
+          radial-gradient(55% 45% at 80% 26%, rgba(200, 210, 255, 0.42), transparent 72%),
+          radial-gradient(65% 55% at 48% 82%, rgba(180, 235, 255, 0.5), transparent 70%),
+          radial-gradient(40% 40% at 82% 80%, rgba(255, 214, 235, 0.28), transparent 72%),
+          linear-gradient(160deg, #f7fbff 0%, #eef7ff 55%, #f9fdff 100%);
+
+        /* 玻璃星体：半透明白蓝 + 高光 */
+        --polaris-boot-star: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.78) 0%,
+          rgba(196, 232, 255, 0.62) 34%,
+          rgba(140, 205, 250, 0.52) 58%,
+          rgba(230, 247, 255, 0.7) 100%
+        );
+        --polaris-boot-star-shadow:
+          0 6px 18px rgba(110, 180, 235, 0.35),
+          inset 0 1px 1px rgba(255, 255, 255, 0.95),
+          inset 0 -2px 6px rgba(120, 190, 240, 0.28),
+          inset 0 0 10px rgba(255, 255, 255, 0.35);
+        --polaris-boot-star-rim: rgba(255, 255, 255, 0.9);
       }
 
       @media (prefers-color-scheme: dark) {
         :root {
           color-scheme: dark;
           --polaris-boot-bg: #090b14;
-          --polaris-boot-star-aura: radial-gradient(circle, rgba(142, 223, 255, 0.18), rgba(216, 185, 255, 0.12) 44%, rgba(246, 167, 207, 0) 72%);
-          --polaris-boot-star: linear-gradient(135deg, #87e0ff 0%, #9aa8ff 32%, #c7a7ff 55%, #f0a5c6 74%, #f2cb82 100%);
-          --polaris-boot-star-shadow: drop-shadow(0 0 18px rgba(142, 223, 255, 0.34));
+          --polaris-boot-backdrop:
+            radial-gradient(60% 50% at 22% 18%, rgba(90, 160, 230, 0.42), transparent 70%),
+            radial-gradient(55% 45% at 80% 26%, rgba(120, 130, 220, 0.34), transparent 72%),
+            radial-gradient(65% 55% at 48% 82%, rgba(70, 170, 220, 0.38), transparent 70%),
+            radial-gradient(40% 40% at 82% 80%, rgba(150, 110, 200, 0.28), transparent 72%),
+            linear-gradient(160deg, #0b0f1c 0%, #0d1424 55%, #090b14 100%);
+          --polaris-boot-star: linear-gradient(
+            135deg,
+            rgba(220, 245, 255, 0.72) 0%,
+            rgba(150, 205, 250, 0.5) 34%,
+            rgba(90, 165, 235, 0.42) 58%,
+            rgba(190, 230, 255, 0.6) 100%
+          );
+          --polaris-boot-star-shadow:
+            0 6px 22px rgba(90, 160, 235, 0.45),
+            inset 0 1px 1px rgba(255, 255, 255, 0.85),
+            inset 0 -2px 6px rgba(80, 150, 220, 0.35),
+            inset 0 0 12px rgba(200, 235, 255, 0.3);
+          --polaris-boot-star-rim: rgba(230, 246, 255, 0.85);
         }
       }
 
       html[data-polaris-appearance='light'] {
         color-scheme: light;
-        --polaris-boot-bg: #ffffff;
-        --polaris-boot-star-aura: radial-gradient(circle, rgba(142, 223, 255, 0.22), rgba(216, 185, 255, 0.12) 44%, rgba(246, 167, 207, 0) 72%);
-        --polaris-boot-star: linear-gradient(135deg, #8edfff 0%, #aeb8ff 32%, #dec2ff 55%, #f5c3d5 74%, #f5d79a 100%);
-        --polaris-boot-star-shadow: drop-shadow(0 0 14px rgba(174, 184, 255, 0.42));
+        --polaris-boot-bg: #f4f9ff;
+        --polaris-boot-backdrop:
+          radial-gradient(60% 50% at 22% 18%, rgba(160, 220, 255, 0.55), transparent 70%),
+          radial-gradient(55% 45% at 80% 26%, rgba(200, 210, 255, 0.42), transparent 72%),
+          radial-gradient(65% 55% at 48% 82%, rgba(180, 235, 255, 0.5), transparent 70%),
+          radial-gradient(40% 40% at 82% 80%, rgba(255, 214, 235, 0.28), transparent 72%),
+          linear-gradient(160deg, #f7fbff 0%, #eef7ff 55%, #f9fdff 100%);
+        --polaris-boot-star: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.78) 0%,
+          rgba(196, 232, 255, 0.62) 34%,
+          rgba(140, 205, 250, 0.52) 58%,
+          rgba(230, 247, 255, 0.7) 100%
+        );
+        --polaris-boot-star-shadow:
+          0 6px 18px rgba(110, 180, 235, 0.35),
+          inset 0 1px 1px rgba(255, 255, 255, 0.95),
+          inset 0 -2px 6px rgba(120, 190, 240, 0.28),
+          inset 0 0 10px rgba(255, 255, 255, 0.35);
+        --polaris-boot-star-rim: rgba(255, 255, 255, 0.9);
       }
 
       html[data-polaris-appearance='dark'] {
         color-scheme: dark;
         --polaris-boot-bg: #090b14;
-        --polaris-boot-star-aura: radial-gradient(circle, rgba(142, 223, 255, 0.18), rgba(216, 185, 255, 0.12) 44%, rgba(246, 167, 207, 0) 72%);
-        --polaris-boot-star: linear-gradient(135deg, #87e0ff 0%, #9aa8ff 32%, #c7a7ff 55%, #f0a5c6 74%, #f2cb82 100%);
-        --polaris-boot-star-shadow: drop-shadow(0 0 18px rgba(142, 223, 255, 0.34));
+        --polaris-boot-backdrop:
+          radial-gradient(60% 50% at 22% 18%, rgba(90, 160, 230, 0.42), transparent 70%),
+          radial-gradient(55% 45% at 80% 26%, rgba(120, 130, 220, 0.34), transparent 72%),
+          radial-gradient(65% 55% at 48% 82%, rgba(70, 170, 220, 0.38), transparent 70%),
+          radial-gradient(40% 40% at 82% 80%, rgba(150, 110, 200, 0.28), transparent 72%),
+          linear-gradient(160deg, #0b0f1c 0%, #0d1424 55%, #090b14 100%);
+        --polaris-boot-star: linear-gradient(
+          135deg,
+          rgba(220, 245, 255, 0.72) 0%,
+          rgba(150, 205, 250, 0.5) 34%,
+          rgba(90, 165, 235, 0.42) 58%,
+          rgba(190, 230, 255, 0.6) 100%
+        );
+        --polaris-boot-star-shadow:
+          0 6px 22px rgba(90, 160, 235, 0.45),
+          inset 0 1px 1px rgba(255, 255, 255, 0.85),
+          inset 0 -2px 6px rgba(80, 150, 220, 0.35),
+          inset 0 0 12px rgba(200, 235, 255, 0.3);
+        --polaris-boot-star-rim: rgba(230, 246, 255, 0.85);
       }
 
       html,
@@ -98,52 +167,71 @@
         overflow: hidden;
       }
 
+      /* 启动态：背景铺极光色斑 + 噪点，玻璃才"有东西可透" */
       #root:empty {
         position: relative;
         min-height: 100vh;
         min-height: 100dvh;
-        background: var(--polaris-boot-bg);
+        background-color: var(--polaris-boot-bg);
+        background-image: var(--polaris-boot-backdrop);
       }
 
-      #root:empty::before,
+      /* 噪点层：给玻璃加磨砂颗粒，同时柔化色斑 */
+      #root:empty::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.5;
+        mix-blend-mode: soft-light;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+        z-index: 0;
+      }
+
+      /* 玻璃星体（缩小到 32px） */
       #root:empty::after {
         content: "";
         position: fixed;
         left: 50%;
         top: 50%;
-        pointer-events: none;
-      }
-
-      #root:empty::before {
-        width: 48px;
-        height: 48px;
-        margin: -24px 0 0 -24px;
-        border-radius: 999px;
-        background: var(--polaris-boot-star-aura);
-        animation: startupStarBreath 1.8s ease-in-out infinite;
-      }
-
-      #root:empty::after {
-        width: 36px;
-        height: 36px;
-        margin: -18px 0 0 -18px;
+        width: 32px;
+        height: 32px;
+        margin: -16px 0 0 -16px;
+        z-index: 1;
         background: var(--polaris-boot-star);
-        clip-path: polygon(50% 16.67%, 57.5% 42.5%, 83.33% 50%, 57.5% 57.5%, 50% 83.33%, 42.5% 57.5%, 16.67% 50%, 42.5% 42.5%);
-        filter: var(--polaris-boot-star-shadow);
-        animation: startupStarTurn 1.8s cubic-bezier(0.62, 0, 0.16, 1) infinite;
+        /* 关键：透出背后极光，形成毛玻璃 */
+        backdrop-filter: blur(10px) saturate(140%);
+        -webkit-backdrop-filter: blur(10px) saturate(140%);
+        border-radius: 14px;
+        border: 1px solid var(--polaris-boot-star-rim);
+        clip-path: polygon(
+          50% 6%, 60% 38%, 94% 50%, 60% 62%,
+          50% 94%, 40% 62%, 6% 50%, 40% 38%
+        );
+        box-shadow: var(--polaris-boot-star-shadow);
+        animation: startupGlassFloat 6s ease-in-out infinite;
       }
 
-      @keyframes startupStarTurn {
-        0% { transform: rotate(0deg) scale(0.92); opacity: 0.78; }
-        14% { opacity: 1; }
-        58% { transform: rotate(360deg) scale(1); opacity: 1; }
-        76% { transform: rotate(360deg) scale(0.94); opacity: 0.86; }
-        100% { transform: rotate(360deg) scale(0.92); opacity: 0.78; }
+      /* 缓慢自转 + 漂浮呼吸 */
+      @keyframes startupGlassFloat {
+        0% {
+          transform: rotate(0deg) scale(1);
+          filter: brightness(1);
+        }
+        50% {
+          transform: rotate(180deg) scale(1.06);
+          filter: brightness(1.06);
+        }
+        100% {
+          transform: rotate(360deg) scale(1);
+          filter: brightness(1);
+        }
       }
 
-      @keyframes startupStarBreath {
-        0%, 100% { transform: scale(0.78); opacity: 0.42; }
-        48% { transform: scale(1.18); opacity: 0.78; }
+      @media (prefers-reduced-motion: reduce) {
+        #root:empty::after {
+          animation: none;
+        }
       }
     </style>
     <link rel="manifest" href="/manifest.webmanifest" />
